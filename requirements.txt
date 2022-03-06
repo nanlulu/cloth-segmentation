@@ -1,0 +1,7 @@
+# for running cloth-segmentation
+tqdm
+PIL-Tools
+numpy
+torch
+torchvision
+opencv-python

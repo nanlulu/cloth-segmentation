@@ -18,7 +18,7 @@ from utils.saving_utils import load_checkpoint_mgpu
 
 from networks import U2NET
 
-device = "cuda"
+device = "cpu"  # "cuda"
 
 image_dir = "input_images"
 result_dir = "output_images"
@@ -65,6 +65,7 @@ palette = get_palette(4)
 images_list = sorted(os.listdir(image_dir))
 pbar = tqdm(total=len(images_list))
 for image_name in images_list:
+    filename, _ = os.path.splitext(image_name)
     img = Image.open(os.path.join(image_dir, image_name)).convert("RGB")
     image_tensor = transform_rgb(img)
     image_tensor = torch.unsqueeze(image_tensor, 0)
@@ -79,7 +80,7 @@ for image_name in images_list:
     output_img = Image.fromarray(output_arr.astype("uint8"), mode="L")
     if do_palette:
         output_img.putpalette(palette)
-    output_img.save(os.path.join(result_dir, image_name[:-3] + "png"))
+    output_img.save(os.path.join(result_dir, filename + "_output.png"))
 
     pbar.update(1)
 
